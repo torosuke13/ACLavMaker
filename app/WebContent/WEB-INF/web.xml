@@ -30,4 +30,13 @@
     <servlet-name>UploadServlet</servlet-name>
     <url-pattern>/upload</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <display-name>SupportServlet</display-name>
+    <servlet-name>SupportServlet</servlet-name>
+    <servlet-class>com.ibm.bluemix.samples.SupportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SupportServlet</servlet-name>
+    <url-pattern>/support</url-pattern>
+  </servlet-mapping>
 </web-app>

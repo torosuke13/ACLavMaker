@@ -59,7 +59,7 @@ public class PostgreSQLClient {
 	
 	public PostgreSQLClient() {
 		try {
-			createTable();
+			createTable2();
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 		}
@@ -103,6 +103,40 @@ public class PostgreSQLClient {
 		}
 	}
 	
+	public List<String> getPoints() throws Exception {
+		String sql = "SELECT * FROM points ORDER BY id DESC";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			connection = getConnection();
+			statement = connection.prepareStatement(sql);
+			results = statement.executeQuery();
+			List<String> texts = new ArrayList<String>();
+			
+			while (results.next()) {
+				texts.add(results.getString("name"));
+				texts.add(results.getString("latitude"));
+				texts.add(results.getString("longitude"));
+			}
+			
+			return texts;
+		} finally {
+			if (results != null) {
+				results.close();
+			}
+			
+			if (statement != null) {
+				statement.close();
+			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+	
 	/**
 	 * Insert text into PostgreSQL
 	 * 
@@ -124,6 +158,43 @@ public class PostgreSQLClient {
 				statement.setString(1, s);
 				statement.addBatch();
 			}
+			int[] rows = statement.executeBatch();
+			connection.commit();
+			
+			return rows.length;
+		} catch (SQLException e) {
+			SQLException next = e.getNextException();
+			
+			if (next != null) {
+				throw next;
+			}
+			
+			throw e;
+		} finally {
+			if (statement != null) {
+				statement.close();
+			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+	
+	public int addPoint(String name, String latitude, String longitude) throws Exception {
+		String sql = "INSERT INTO points (name,latitude,longitude) VALUES (?,?,?)";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			statement = connection.prepareStatement(sql);
+			
+			statement.setString(1, name);
+			statement.setString(2, latitude);
+			statement.setString(3, longitude);
+			statement.addBatch();
+			
 			int[] rows = statement.executeBatch();
 			connection.commit();
 			
@@ -215,6 +286,29 @@ public class PostgreSQLClient {
 		String sql = "CREATE TABLE IF NOT EXISTS posts (" +
 						"id serial primary key, " +
 						"text text" +
+					 ");";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try {
+			connection = getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.executeUpdate();
+		} finally {			
+			if (statement != null) {
+				statement.close();
+			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+	
+	private void createTable2() throws Exception {
+		String sql = "CREATE TABLE IF NOT EXISTS points (" +
+						"id serial primary key, " +
+						"name text, latitude text, longitude text" +
 					 ");";
 		Connection connection = null;
 		PreparedStatement statement = null;

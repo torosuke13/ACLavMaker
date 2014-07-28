@@ -39,4 +39,13 @@
     <servlet-name>SupportServlet</servlet-name>
     <url-pattern>/support</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <display-name>AddServlet</display-name>
+    <servlet-name>AddServlet</servlet-name>
+    <servlet-class>com.ibm.bluemix.samples.AddServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddServlet</servlet-name>
+    <url-pattern>/add</url-pattern>
+  </servlet-mapping>
 </web-app>

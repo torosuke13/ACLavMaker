@@ -12,54 +12,53 @@
     }
   </style>
   <script src="/js/bootstrap.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+  <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD2wBM0eTo5GqhQpmujouK-Jbv-zKlY-cI&sensor=true">
+  </script>
   
-  <script>
-//ユーザーの現在の位置情報を取得
-navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-
-/***** ユーザーの現在の位置情報を取得 *****/
-function successCallback(position) {
-  	var gl_text = "緯度：" + position.coords.latitude + "<br>";
-    gl_text += "経度：" + position.coords.longitude + "<br>";
-    //gl_text += "高度：" + position.coords.altitude + "<br>";
-    //gl_text += "緯度・経度の誤差：" + position.coords.accuracy + "<br>";
-    //gl_text += "高度の誤差：" + position.coords.altitudeAccuracy + "<br>";
-    gl_text += "方角：" + position.coords.heading + "<br>";
-    //gl_text += "速度：" + position.coords.speed + "<br>";
-  	document.getElementById("show_result").innerHTML = gl_text;
+  <script type="text/javascript">
+  	var message;
   	
-   	var map = new google.maps.Map(document.getElementById("map"));
-    map.addControl(new GLargeMapControl());
-    map.addControl(new GMapTypeControl());
-    var latlng = new GLatLng(position.coords.latitude,position.coords.longitude);
-    map.setCenter(latlng, 14, G_NORMAL_MAP);
-    var marker = new GMarker(latlng);
-    map.addOverlay(marker);
-}
+  	function initialize() {
+  		document.getElementById("area_name").innerHTML= '位置情報取得します';
+    	if (navigator.geolocation) {
+    		navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
+    	} else {
+    		message = "本ブラウザではGeolocationが使えません";
+    		document.getElementById("area_name").innerHTML = message;
+    	}
+  	}
+  	
+  	function successCallback(pos) {
+  		mapping(pos.coords.latitude,pos.coords.longitude);
+  	}
+  	
+  	function errorCallback(error) {
+  		message = "位置情報が許可されていません";
+  		document.getElementById("area_name").innerHTML = message;
+  	}
+  	
+    function mapping(x,y) {
+      	var myLatlng = new google.maps.LatLng(x,y);
+      	var opts = {
+        	zoom: 15,
+        	center: myLatlng,
+        	mapTypeId: google.maps.MapTypeId.ROADMAP
+      	};
+      	var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
+      	var marker = new google.maps.Marker({
+      		position: myLatlng,
+      		map: map,
+      		title:"Your position"
+      	});
+    }
+    </script>
+    
 
-/***** 位置情報が取得できない場合 *****/
-function errorCallback(error) {
-  var err_msg = "";
-  switch(error.code)
-  {
-    case 1:
-      err_msg = "位置情報の利用が許可されていません";
-      break;
-    case 2:
-      err_msg = "デバイスの位置が判定できません";
-      break;
-    case 3:
-      err_msg = "タイムアウトしました";
-      break;
-  }
-  document.getElementById("show_result").innerHTML = err_msg;
-}
-</script>
 
 </head>
 <meta charset="utf-8">
-<body>
+<body onload="initialize()">
   <div class="container">
     <div class="hero-unit">
       <div class="text-center">
@@ -69,6 +68,15 @@ function errorCallback(error) {
           <form action="/support" method="POST">
             <input type="hidden" name="support" value="support" />
             <input type="submit" class="btn" value="Support" />
+          </form>
+        </p>
+        
+        <p>
+          <form action="/add" method="POST">
+          	<input type="text" name="name" value="name" />
+            <input type="text" name="latitude" value="latitude" />
+            <input type="text" name="longitude" value="longitude" />
+            <input type="submit" class="btn" value="add" />
           </form>
         </p>
         
@@ -91,9 +99,9 @@ function errorCallback(error) {
       </table>
     </div>
     
-    <% if (request.getAttribute("status") != null) { %>
-        	  <div id="show_result"></div>
-        	  <div id="map"></div>
+    <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
+        	  <div id="map_canvas" style="width:500px; height:300px"></div>
+        	  <div id="area_name"></div>
     <% } %>
     
   </div>

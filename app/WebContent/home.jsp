@@ -62,11 +62,8 @@ function errorCallback(error) {
 <body>
   <div class="container">
     <div class="hero-unit">
-      <div class="pull-right">    
-        <a href="/delete" class="btn btn-danger" title="Clear All">X</a>
-      </div>
       <div class="text-center">
-        <h1><a href="/">BlueMix Upload</a></h1>
+        <h1><a href="/">ACLav Maker</a></h1>
         
         <p>
           <form action="/support" method="POST">

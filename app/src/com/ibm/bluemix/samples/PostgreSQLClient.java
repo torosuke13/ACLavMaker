@@ -224,7 +224,7 @@ public class PostgreSQLClient {
 	 * @throws Exception 
 	 */
 	public int deleteAll() throws Exception {
-		String sql = "DELETE FROM posts WHERE TRUE";
+		String sql = "DELETE FROM points WHERE TRUE";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
@@ -318,6 +318,102 @@ public class PostgreSQLClient {
 			statement = connection.prepareStatement(sql);
 			statement.executeUpdate();
 		} finally {			
+			if (statement != null) {
+				statement.close();
+			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+
+	public List<String> getNames() throws Exception {
+		String sql = "SELECT * FROM points ORDER BY id DESC";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			connection = getConnection();
+			statement = connection.prepareStatement(sql);
+			results = statement.executeQuery();
+			List<String> texts = new ArrayList<String>();
+			
+			while (results.next()) {
+				texts.add(results.getString("name"));
+			}
+			
+			return texts;
+		} finally {
+			if (results != null) {
+				results.close();
+			}
+			
+			if (statement != null) {
+				statement.close();
+			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+
+	public List<String> getLatitudes() throws Exception {
+		String sql = "SELECT * FROM points ORDER BY id DESC";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			connection = getConnection();
+			statement = connection.prepareStatement(sql);
+			results = statement.executeQuery();
+			List<String> texts = new ArrayList<String>();
+			
+			while (results.next()) {
+				texts.add(results.getString("latitude"));
+			}
+			
+			return texts;
+		} finally {
+			if (results != null) {
+				results.close();
+			}
+			
+			if (statement != null) {
+				statement.close();
+			}
+			
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+
+	public List<String> getLongitudes() throws Exception {
+		String sql = "SELECT * FROM points ORDER BY id DESC";
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			connection = getConnection();
+			statement = connection.prepareStatement(sql);
+			results = statement.executeQuery();
+			List<String> texts = new ArrayList<String>();
+			
+			while (results.next()) {
+				texts.add(results.getString("longitude"));
+			}
+			
+			return texts;
+		} finally {
+			if (results != null) {
+				results.close();
+			}
+			
 			if (statement != null) {
 				statement.close();
 			}

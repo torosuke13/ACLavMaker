@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Upload</title>
+  <title>ACLav Maker</title>
   <link href="/css/bootstrap.css" rel="stylesheet">
   <style>
     .hero-unit {
@@ -39,6 +39,9 @@
   	}
   	
     function mapping(x,y) {
+    	var directionsDisplay = new google.maps.DirectionsRenderer();
+    	var directionsService = new google.maps.DirectionsService();
+    	
       	var myLatlng = new google.maps.LatLng(x,y);
       	var opts = {
         	zoom: 15,
@@ -46,12 +49,56 @@
         	mapTypeId: google.maps.MapTypeId.ROADMAP
       	};
       	var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
-      	var marker = new google.maps.Marker({
+      	directionsDisplay.setMap(map);
+      	directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+      	
+      	var mymarker = new google.maps.Marker({
       		position: myLatlng,
       		map: map,
-      		title:"Your position"
+      		title:"your location"
       	});
+      	
+      	<%
+      	java.util.List<String> names = (java.util.List<String>) request.getAttribute("names");
+        if (names == null) {
+       	 names = new ArrayList<String>();
+        }
+        java.util.List<String> latitudes = (java.util.List<String>) request.getAttribute("latitudes");
+        if (latitudes == null) {
+       	 latitudes = new ArrayList<String>();
+        }
+        java.util.List<String> longitudes = (java.util.List<String>) request.getAttribute("longitudes");
+        if (longitudes == null) {
+       	 longitudes = new ArrayList<String>();
+        }
+        
+        for (int i=0; i<names.size(); i++) {
+        %>
+        var Latlng<%=i%> = new google.maps.LatLng(<%=latitudes.get(i)%>,<%=longitudes.get(i)%>);
+        var marker<%=i%> = new google.maps.Marker({
+      		position: Latlng<%=i%>,
+      		map: map,
+      		title:"<%= names.get(i) %>"
+      	});
+        google.maps.event.addListener(marker<%=i%>, 'click', function() {
+            var request = {
+            		origin: myLatlng,
+            		destination: Latlng<%=i%>,
+            		travelMode: google.maps.TravelMode.WALKING
+            };
+            directionsService.route(request, function(result, status) {
+            	if (status == google.maps.DirectionsStatus.OK) {
+            		directionsDisplay.setDirections(result);
+            	}
+            });
+        	<%request.setAttribute("status","support");%>
+        });
+            
+        <%
+        }
+        %>
     }
+    
     </script>
     
 
@@ -61,6 +108,9 @@
 <body onload="initialize()">
   <div class="container">
     <div class="hero-unit">
+      <div class="pull-right">    
+        <a href="/delete" class="btn btn-danger" title="Clear All">X</a>
+      </div>
       <div class="text-center">
         <h1><a href="/">ACLav Maker</a></h1>
         
@@ -100,7 +150,12 @@
     </div>
     
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
-        	  <div id="map_canvas" style="width:500px; height:300px"></div>
+        	  <div id="map_canvas" style="width:800px; height:600px"></div>
+        	  <div id="area_name"></div>
+    <% } %>
+    <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
+        	  <div id="map_canvas" style="width:800px; height:600px"></div>
+        	  <div id="directionsPanel" style="float:right;width:300px; height:300px"></div>
         	  <div id="area_name"></div>
     <% } %>
     

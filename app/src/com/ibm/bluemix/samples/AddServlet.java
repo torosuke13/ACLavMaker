@@ -68,7 +68,7 @@ public class AddServlet extends HttpServlet {
         	db.addPoint(name, latitude, longitude);
 			//List<String> posts = Arrays.asList(name, latitude, longitude);
 			//request.setAttribute("posts", posts);
-			request.setAttribute("status", "select");
+			request.setAttribute("status", "add");
 			List<String> posts = db.getPoints();
 			request.setAttribute("posts", posts);
 			

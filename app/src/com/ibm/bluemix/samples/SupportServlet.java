@@ -61,14 +61,28 @@ public class SupportServlet extends HttpServlet {
     	System.out.println("Support Servlet");
         
         try {
-			//List<String> posts = db.getResults();
-			List<String> posts = Arrays.asList("post1", "post2", "post3", "post4", "post5");
+			List<String> names = db.getNames();
+			List<String> latitudes = db.getLatitudes();
+			List<String> longitudes = db.getLongitudes();
+			List<String> posts = new ArrayList<String>();
+			/*
+			for(int i=0; i<names.size(); i++) {
+				posts.add(names.get(i));
+				posts.add(latitudes.get(i));
+				posts.add(longitudes.get(i));
+			}
+			*/
 			request.setAttribute("posts", posts);
+			request.setAttribute("names", names);
+			request.setAttribute("latitudes", latitudes);
+			request.setAttribute("longitudes", longitudes);
 			request.setAttribute("status", "select");
 			
 		} catch (Exception e) {
 			request.setAttribute("msg", e.getMessage());
-			request.setAttribute("posts", new ArrayList<String>());
+			request.setAttribute("names", new ArrayList<String>());
+			request.setAttribute("latitudes", new ArrayList<String>());
+			request.setAttribute("longitudes", new ArrayList<String>());
 			e.printStackTrace(System.err);
 		}
         

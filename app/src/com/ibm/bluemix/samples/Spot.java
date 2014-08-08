@@ -1,16 +1,16 @@
 package com.ibm.bluemix.samples;
 
 public class Spot {
-	String name;
-	double latitude;
-	double longitude;
-	int ambience;
-	int accessibility;
-	int calmness;
-	int dramatic;
-	int openess;
-	int total;
-	String comment;
+	public String name;
+	public double latitude;
+	public double longitude;
+	public int ambience;
+	public int accessibility;
+	public int calmness;
+	public int dramatic;
+	public int openess;
+	public int total;
+	public String comment;
 	
 	Spot(String name, double latitude, double longitude, int ambience, int accessibility, int calmness, int dramatic,	int openess, int total,	String comment) {
 		this.name = name;

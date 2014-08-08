@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.ibm.bluemix.samples.Spot" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,26 +61,19 @@
       	});
       	
       	<%
-      	java.util.List<String> names = (java.util.List<String>) request.getAttribute("names");
-        if (names == null) {
-       	 names = new ArrayList<String>();
+        java.util.List<Spot> spots = (java.util.List<Spot>) request.getAttribute("spots");
+        if (spots == null) {
+       	 spots = new ArrayList<Spot>();
         }
-        java.util.List<String> latitudes = (java.util.List<String>) request.getAttribute("latitudes");
-        if (latitudes == null) {
-       	 latitudes = new ArrayList<String>();
-        }
-        java.util.List<String> longitudes = (java.util.List<String>) request.getAttribute("longitudes");
-        if (longitudes == null) {
-       	 longitudes = new ArrayList<String>();
-        }
-        
-        for (int i=0; i<names.size(); i++) {
+        System.out.println("spots size:" + spots.size());
+        for (int i = 0; i < spots.size(); i++) {
+        	System.out.println("spots name:" + spots.get(i).name);
         %>
-        var Latlng<%=i%> = new google.maps.LatLng(<%=latitudes.get(i)%>,<%=longitudes.get(i)%>);
+        var Latlng<%=i%> = new google.maps.LatLng(<%=spots.get(i).latitude%>,<%=spots.get(i).longitude%>);
         var marker<%=i%> = new google.maps.Marker({
       		position: Latlng<%=i%>,
       		map: map,
-      		title:"<%= names.get(i) %>"
+      		title:"<%=spots.get(i).name%>"
       	});
         google.maps.event.addListener(marker<%=i%>, 'click', function() {
             var request = {
@@ -108,9 +103,6 @@
 <body onload="initialize()">
   <div class="container">
     <div class="hero-unit">
-      <div class="pull-right">    
-        <a href="/delete" class="btn btn-danger" title="Clear All">X</a>
-      </div>
       <div class="text-center">
         <h1><a href="/">ACLav Maker</a></h1>
         
@@ -118,15 +110,6 @@
           <form action="/support" method="POST">
             <input type="hidden" name="support" value="support" />
             <input type="submit" class="btn" value="Support" />
-          </form>
-        </p>
-        
-        <p>
-          <form action="/add" method="POST">
-          	<input type="text" name="name" value="name" />
-            <input type="text" name="latitude" value="latitude" />
-            <input type="text" name="longitude" value="longitude" />
-            <input type="submit" class="btn" value="add" />
           </form>
         </p>
         

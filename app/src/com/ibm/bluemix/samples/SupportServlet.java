@@ -55,34 +55,21 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class SupportServlet extends HttpServlet {
 	
-	private PostgreSQLClient db = new PostgreSQLClient();
+	private DB2Client db = new DB2Client();
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	System.out.println("Support Servlet");
         
         try {
-			List<String> names = db.getNames();
-			List<String> latitudes = db.getLatitudes();
-			List<String> longitudes = db.getLongitudes();
-			List<String> posts = new ArrayList<String>();
-			/*
-			for(int i=0; i<names.size(); i++) {
-				posts.add(names.get(i));
-				posts.add(latitudes.get(i));
-				posts.add(longitudes.get(i));
-			}
-			*/
-			request.setAttribute("posts", posts);
-			request.setAttribute("names", names);
-			request.setAttribute("latitudes", latitudes);
-			request.setAttribute("longitudes", longitudes);
+        	List<Spot> spots = db.getSpots();
+        	List<String> near_spots = new ArrayList<String>();
+        	
+			request.setAttribute("spots", spots);
 			request.setAttribute("status", "select");
 			
 		} catch (Exception e) {
 			request.setAttribute("msg", e.getMessage());
-			request.setAttribute("names", new ArrayList<String>());
-			request.setAttribute("latitudes", new ArrayList<String>());
-			request.setAttribute("longitudes", new ArrayList<String>());
+			request.setAttribute("spots", new ArrayList<Spot>());
 			e.printStackTrace(System.err);
 		}
         

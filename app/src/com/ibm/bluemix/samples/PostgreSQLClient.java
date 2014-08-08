@@ -254,22 +254,29 @@ public class PostgreSQLClient {
 			// We don't know exactly what the service is called, but it will contain "postgresql"
 			for (Object key : vcap.keySet()) {
 				String keyStr = (String) key;
-				if (keyStr.toLowerCase().contains("postgresql")) {
+				//if (keyStr.toLowerCase().contains("postgresql")) {
+				if (keyStr.toLowerCase().contains("sqldb")) {
 					service = (JSONObject) ((JSONArray) vcap.get(keyStr)).get(0);
 					break;
 				}
 			}
 			
 			if (service != null) {
+				Class.forName("com.ibm.db2.jcc.DB2Driver");  
 				JSONObject creds = (JSONObject) service.get("credentials");
-				String name = (String) creds.get("name");
+				//String name = (String) creds.get("name");
+				String name = (String) creds.get("db");
 				String host = (String) creds.get("host");
 				Long port = (Long) creds.get("port");
-				String user = (String) creds.get("user");
+				//String user = (String) creds.get("user");
+				String user = (String) creds.get("username");
 				String password = (String) creds.get("password");
 				
-				String url = "jdbc:postgresql://" + host + ":" + port + "/" + name;
-				
+				//String url = "jdbc:postgresql://" + host + ":" + port + "/" + name;
+				//String url = "jdbc:db2://" + host + ":" + port + "/" + name;
+				String url = (String) creds.get("jdbcurl");
+				System.out.println("username:"+user);
+				System.out.println("password:"+password);
 				return DriverManager.getConnection(url, user, password);
 			}
 		}
@@ -306,10 +313,14 @@ public class PostgreSQLClient {
 	}
 	
 	private void createTable2() throws Exception {
-		String sql = "CREATE TABLE IF NOT EXISTS points (" +
+		/*String sql = "CREATE TABLE IF NOT EXISTS points (" +
 						"id serial primary key, " +
 						"name text, latitude text, longitude text" +
-					 ");";
+					 ");";*/
+		String sql = "CREATE TABLE IF NOT EXISTS test_data (" +
+				"id serial primary key, " +
+				"name varchar, latitude decimal, longitude decimal" +
+			 ");";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		
@@ -329,7 +340,8 @@ public class PostgreSQLClient {
 	}
 
 	public List<String> getNames() throws Exception {
-		String sql = "SELECT * FROM points ORDER BY id DESC";
+		//String sql = "SELECT * FROM points ORDER BY id DESC";
+		String sql = "SELECT * FROM DB2INST1.TESTDATA2";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet results = null;
@@ -361,7 +373,8 @@ public class PostgreSQLClient {
 	}
 
 	public List<String> getLatitudes() throws Exception {
-		String sql = "SELECT * FROM points ORDER BY id DESC";
+		//String sql = "SELECT * FROM points ORDER BY id DESC";
+		String sql = "SELECT * FROM DB2INST1.TESTDATA2";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet results = null;
@@ -373,7 +386,9 @@ public class PostgreSQLClient {
 			List<String> texts = new ArrayList<String>();
 			
 			while (results.next()) {
-				texts.add(results.getString("latitude"));
+				//texts.add(results.getString("latitude"));
+				double longitude = results.getDouble("latitude");
+				texts.add(String.valueOf(longitude));
 			}
 			
 			return texts;
@@ -393,7 +408,8 @@ public class PostgreSQLClient {
 	}
 
 	public List<String> getLongitudes() throws Exception {
-		String sql = "SELECT * FROM points ORDER BY id DESC";
+		//String sql = "SELECT * FROM points ORDER BY id DESC";
+		String sql = "SELECT * FROM DB2INST1.TESTDATA2";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet results = null;
@@ -403,9 +419,11 @@ public class PostgreSQLClient {
 			statement = connection.prepareStatement(sql);
 			results = statement.executeQuery();
 			List<String> texts = new ArrayList<String>();
-			
+		
 			while (results.next()) {
-				texts.add(results.getString("longitude"));
+				//texts.add(results.getString("longitude"));
+				double longitude = results.getDouble("longitude");
+				texts.add(String.valueOf(longitude));
 			}
 			
 			return texts;

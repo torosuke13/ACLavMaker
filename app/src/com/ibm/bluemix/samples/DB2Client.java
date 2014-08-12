@@ -110,8 +110,6 @@ public class DB2Client {
 				String password = (String) creds.get("password");
 				
 				String url = (String) creds.get("jdbcurl");
-				System.out.println("username:"+user);
-				System.out.println("password:"+password);
 				return DriverManager.getConnection(url, user, password);
 			}
 		}

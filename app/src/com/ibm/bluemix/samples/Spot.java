@@ -11,6 +11,7 @@ public class Spot {
 	public int openess;
 	public int total;
 	public String comment;
+	public int distance;
 	
 	Spot(String name, double latitude, double longitude, int ambience, int accessibility, int calmness, int dramatic,	int openess, int total,	String comment) {
 		this.name = name;
@@ -23,5 +24,6 @@ public class Spot {
 		this.openess = openess;
 		this.total = total;
 		this.comment = comment;
+		this.distance = -1;
 	}
 }

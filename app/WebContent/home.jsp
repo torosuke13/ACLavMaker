@@ -266,7 +266,6 @@
 	      </div>
 	    </td>
 	    <td width="50%">
-	      <!--<div id="support_map" style="width:400px; height:300px"></div>-->
 	      <div id="support_map" style="width:300px; height:300px"></div>
 	      <div id="area_name"></div>
 	    </td>

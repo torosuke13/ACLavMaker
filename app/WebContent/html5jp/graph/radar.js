@@ -177,6 +177,8 @@ html5jp.graph.radar.prototype.draw = function(items, inparams) {
 	if( typeof(params.aMax) != "number" ) {
 		params.aMax = max_v;
 	}
+	params.aMax = 5;
+	params.aMin = 0;
 	/* 陬懷勧邱壹�菴咲ｽｮ繧定�蜍慕ｮ怜� */
 	if( typeof(params.aLinePositions) == "string" && params.aLinePositions == "auto" ) {
 		params.aLinePositions = this._aline_positions_auto_calc(params.aMin, params.aMax);
@@ -206,8 +208,6 @@ html5jp.graph.radar.prototype.draw = function(items, inparams) {
 陬懷勧邱壹�菴咲ｽｮ繧定�蜍慕ｮ怜�
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._aline_positions_auto_calc = function(min, max) {
-	max = 5;
-	min = 0;
 	var range = max - min;
 	var power10 = Math.floor( Math.log(range) / Math.log(10) );
 	var unit = Math.pow( 10,  power10);

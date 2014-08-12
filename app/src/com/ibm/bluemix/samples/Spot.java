@@ -13,7 +13,7 @@ public class Spot {
 	public String comment;
 	public int distance;
 	
-	Spot(String name, double latitude, double longitude, int ambience, int accessibility, int calmness, int dramatic, int openess, int total, String comment) {
+	public Spot(String name, double latitude, double longitude, int ambience, int accessibility, int calmness, int dramatic, int openess, int total, String comment) {
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -27,7 +27,7 @@ public class Spot {
 		this.distance = -1;
 	}
 	
-	Spot() {
+	public Spot() {
 		this.name = "default";
 		this.latitude = 0.0;
 		this.longitude = 0.0;

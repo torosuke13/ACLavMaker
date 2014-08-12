@@ -165,12 +165,14 @@
       	var mymarker2 = new google.maps.Marker({
       		position: myLatlng,
       		map: map2,
-      		title:"your location"
+      		title:"your location",
+      		icon: "img/icon_A.png"
       	});
       	
       	<%
+      	Spot dst_spot = new Spot();
       	if(request.getAttribute("dst_spot") != null) {
-      		Spot dst_spot = (Spot) request.getAttribute("dst_spot");
+      		dst_spot = (Spot) request.getAttribute("dst_spot");
         	System.out.println("dst_spot:" + dst_spot.name);
         %>
         var Latlng = new google.maps.LatLng(<%=dst_spot.latitude%>,<%=dst_spot.longitude%>);
@@ -213,16 +215,16 @@
 	  <tr>
 	    <td width="30%">
 	      	A : <%=spots.get(0).name%><br />
-	      	繧ｪ繧ｹ繧ｹ繝｡蠎ｦ: <%=spots.get(0).total%>
+	      オススメ度 : <%=spots.get(0).total%>
 	      <hr />
 	      	B : <%=spots.get(1).name%><br />
-	      	繧ｪ繧ｹ繧ｹ繝｡蠎ｦ: <%=spots.get(1).total%>
+	      オススメ度 : <%=spots.get(1).total%>
 	      <hr />
 	      	C : <%=spots.get(2).name%><br />
-	      	繧ｪ繧ｹ繧ｹ繝｡蠎ｦ: <%=spots.get(2).total%>
+	      オススメ度 : <%=spots.get(2).total%>
 	    </td>
 	    <td width="70%">
-              <div id="select_map" style="width:800px; height:600px"></div>
+              <div id="select_map" style="width:400px; height:300px"></div>
               <div id="area_name"></div>
 	    </td>
 	</table>
@@ -231,30 +233,38 @@
     
 	<table width="80%">
 	  <tr>
-	    <td width="30%">
+	    <td width="50%">
 	      <div id="location_name">
 		<h3>
 		  <%= dst_spot.name %>
 		</h3>
 	      </div>
-	      <div id="location_name">
-		繧ｪ繧ｹ繧ｹ繝｡蠎ｦ : <%= dst_spot.name %>
+	      <div>
+	        <canvas width="100%" height="400px" id="sample"></canvas>
 	      </div>
 	      <script>
-		var rc = new html5jp.graph.radar("sample");
-		if( rc ) {
-		var items = [["",
-		<%= dst_spot.ambience, %>
-		<% 	     dst_spot.accessibility, %>
-		<% 	     dst_spot.calmness, %>
-		<% 	     dst_spot.dramatic, %>
-		<% 	     dst_spot.openess]]; %>
-		<% var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openess"]}; %>
-		<%             rc.draw(items, params); %>
-		</script>
+	       var rc = new html5jp.graph.radar("sample");
+               if( rc ) {
+               var items = [["",
+			     <%=dst_spot.ambience%>,
+			     <%=dst_spot.accessibility%>,
+			     <%=dst_spot.calmness%>,
+			     <%=dst_spot.dramatic%>,
+			     <%=dst_spot.openess%>]];
+               var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openness"]};
+	       		rc.draw(items, params);
+	      	}
+	      </script>
+	      <div>
+		オススメ度 : <%=dst_spot.total%>
+	      </div>
+	      <div>
+		コメント : <%=dst_spot.comment%>
+	      </div>
 	    </td>
-	    <td width="70%">
-	      <div id="support_map" style="width:800px; height:600px"></div>
+	    <td width="50%">
+	      <!--<div id="support_map" style="width:400px; height:300px"></div>-->
+	      <div id="support_map" width="100%"></div>
 	      <div id="area_name"></div>
 	    </td>
 	</table>

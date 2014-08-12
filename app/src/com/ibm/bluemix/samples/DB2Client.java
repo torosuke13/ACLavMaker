@@ -18,7 +18,7 @@ public class DB2Client {
 	}
 		
 	public List<Spot> getSpots() throws Exception {
-		String sql = "SELECT * FROM DB2INST1.TESTDATA2";
+		String sql = "SELECT * FROM DB2INST1.TSUKUBA_SPOTS";
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet results = null;

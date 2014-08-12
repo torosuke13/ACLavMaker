@@ -232,20 +232,26 @@
 	<table width="80%">
 	  <tr>
 	    <td width="30%">
+	      <div id="location_name">
+		<h3>
+		  <%= dst_spot.name %>
+		</h3>
+	      </div>
+	      <div id="location_name">
+		オススメ度 : <%= dst_spot.name %>
+	      </div>
 	      <script>
-	       var rc = new html5jp.graph.radar("sample");
-               if( rc ) {
-               var items = [["",
-			     dst_spot.ambience,
-			     dst_spot.accessibility,
-			     dst_spot.calmness,
-			     dst_spot.dramatic,
-			     dst_spot.openess]];
-               var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openess"]};
-	       		rc.draw(items, params);
-	      	}
-	      </script>
-	      
+		var rc = new html5jp.graph.radar("sample");
+		if( rc ) {
+		var items = [["",
+		<%= dst_spot.ambience, %>
+		<% 	     dst_spot.accessibility, %>
+		<% 	     dst_spot.calmness, %>
+		<% 	     dst_spot.dramatic, %>
+		<% 	     dst_spot.openess]]; %>
+		<% var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openess"]}; %>
+		<%             rc.draw(items, params); %>
+		</script>
 	    </td>
 	    <td width="70%">
 	      <div id="support_map" style="width:800px; height:600px"></div>

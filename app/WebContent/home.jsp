@@ -237,13 +237,13 @@
 	<table width="80%">
 	  <tr>
 	    <td width="50%">
-	      <div id="location_name" width="100%">
+	      <div id="location_name" width="100px">
 		<h3>
 		  <%= dst_spot.name %>
 		</h3>
 	      </div>
-	      <div width="100%" id="canvas">
-	        <canvas width="100%" height="400px" id="sample"></canvas>
+	      <div width="300px" id="canvas">
+	        <canvas width="300px" height="300px" id="sample"></canvas>
 	      </div>
 	      <script>
 	       var rc = new html5jp.graph.radar("sample");

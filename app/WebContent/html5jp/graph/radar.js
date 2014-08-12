@@ -21,32 +21,33 @@ if( typeof html5jp.graph == 'undefined' ) {
 	html5jp.graph = new Object();
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-* コンストラクタ
+/* 笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏�
+* 繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
 * ---------------------------------------------------------------- */
 html5jp.graph.radar = function (id) {
 	var elm = document.getElementById(id);
 	if(! elm) { return; }
 	if( ! elm.nodeName.match(/^CANVAS$/i) ) { return; }
 	if( ! elm.parentNode.nodeName.match(/^DIV$/i) ) { return; };
-	/* CANVAS要素 */
+	/* CANVAS隕∫ｴ�*/
 	if ( ! elm.getContext ){ return; }
 	this.canvas = elm;
-	/* 2D コンテクストの生成 */
+	/* 2D 繧ｳ繝ｳ繝�け繧ｹ繝医�逕滓� */
 	this.ctx = this.canvas.getContext('2d');
 	this.canvas.style.margin = "0";
 	this.canvas.parentNode.style.position = "relative";
 	this.canvas.parentNode.style.padding = "0";
-	/* CANVAS要素の親要素となるDIV要素の幅と高さをセット */
+	/* CANVAS隕∫ｴ��隕ｪ隕∫ｴ�→縺ｪ繧汽IV隕∫ｴ��蟷�→鬮倥＆繧偵そ繝�ヨ */
+	console.log(this.canvas.width);
 	this.canvas.parentNode.style.width = this.canvas.width + "px";
 	this.canvas.parentNode.style.height = this.canvas.height + "px";
 };
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-* 描画
+/* 笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏�
+* 謠冗判
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype.draw = function(items, inparams) {
 	if( ! this.ctx ) {return;}
-	/* パラメータの初期化 */
+	/* 繝代Λ繝｡繝ｼ繧ｿ縺ｮ蛻晄悄蛹�*/
 	var params = {
 		aCap: [],
 		aCapColor: "#000000",
@@ -97,19 +98,19 @@ html5jp.graph.radar.prototype.draw = function(items, inparams) {
 		params.faceColors = params._faceColors;
 	}
 	this.params = params;
-	/* CANVASの背景を塗る */
+	/* CANVAS縺ｮ閭梧勹繧貞｡励ｋ */
 	if( params.backgroundColor ) {
 		this.ctx.beginPath();
 		this.ctx.fillStyle = params.backgroundColor;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
-	/* CANVAS要素の横幅が縦幅の1.5倍未満、または縦幅が200未満であれば凡例は強制的に非表示 */
+	/* CANVAS隕∫ｴ��讓ｪ蟷�′邵ｦ蟷��1.5蛟肴悴貅��縺ｾ縺溘�邵ｦ蟷�′200譛ｪ貅�〒縺ゅｌ縺ｰ蜃｡萓九�蠑ｷ蛻ｶ逧�↓髱櫁｡ｨ遉ｺ */
 	if(this.canvas.width / this.canvas.height < 1.5 || this.canvas.height < 200) {
 		params.legend == false;
 	}
-	/* CANVAS要素の座標 */
+	/* CANVAS隕∫ｴ��蠎ｧ讓�*/
 	var canvas_pos = this._getElementAbsPos(this.canvas);
-	/* チャートの中心座標と半径 */
+	/* 繝√Ε繝ｼ繝医�荳ｭ蠢�ｺｧ讓吶→蜊雁ｾ�*/
 	var cpos = {
 		x: this.canvas.width / 2,
 		y: this.canvas.height / 2,
@@ -119,11 +120,11 @@ html5jp.graph.radar.prototype.draw = function(items, inparams) {
 		cpos.r = Math.min(this.canvas.width, this.canvas.height) * 0.7 / 2
 		cpos.x = this.canvas.height * 0.1 + cpos.r;
 	}
-	/* 項目の数（最大10個） */
+	/* 鬆�岼縺ｮ謨ｰ�域怙螟ｧ10蛟具ｼ�*/
 	var item_num = items.length;
 	if(item_num > 10) { item_num = 10; }
 	params.itemNum = item_num;
-	/* 指標の最大数を算出（多角形の角数） 最小3角・最大24角 */
+	/* 謖�ｨ吶�譛�､ｧ謨ｰ繧堤ｮ怜��亥､夊ｧ貞ｽ｢縺ｮ隗呈焚��譛�ｰ�隗偵�譛�､ｧ24隗�*/
 	var angle_num = 0;
 	for(var i=0; i<items.length; i++) {
 		var n = items[i].length;
@@ -137,14 +138,14 @@ html5jp.graph.radar.prototype.draw = function(items, inparams) {
 		angle_num = 24;
 	}
 	params.angleNum = angle_num;
-	/* 各軸の角度（ラジアン）を算出（右方向を0度とし反時計回りの角度） */
+	/* 蜷�ｻｸ縺ｮ隗貞ｺｦ�医Λ繧ｸ繧｢繝ｳ�峨ｒ邂怜��亥承譁ｹ蜷代ｒ0蠎ｦ縺ｨ縺怜渚譎りｨ亥屓繧翫�隗貞ｺｦ��*/
 	var axis_angles = [Math.PI/2];
 	for(var i=1; i<angle_num; i++) {
 		axis_angles.push( Math.PI / 2 - Math.PI * 2 * i / angle_num );
 	}
-	/* チャートの形状を描画 */
+	/* 繝√Ε繝ｼ繝医�蠖｢迥ｶ繧呈緒逕ｻ */
 	this._draw_chart_shape(params, cpos, axis_angles);
-	/* 全項目の最大値・最小値と項目数を算出 */
+	/* 蜈ｨ鬆�岼縺ｮ譛�､ｧ蛟､繝ｻ譛�ｰ丞�縺ｨ鬆�岼謨ｰ繧堤ｮ怜� */
 	var max_v = null;
 	var min_v = null;
 	var max_n = 0;
@@ -176,35 +177,37 @@ html5jp.graph.radar.prototype.draw = function(items, inparams) {
 	if( typeof(params.aMax) != "number" ) {
 		params.aMax = max_v;
 	}
-	/* 補助線の位置を自動算出 */
+	/* 陬懷勧邱壹�菴咲ｽｮ繧定�蜍慕ｮ怜� */
 	if( typeof(params.aLinePositions) == "string" && params.aLinePositions == "auto" ) {
 		params.aLinePositions = this._aline_positions_auto_calc(params.aMin, params.aMax);
 	}
-	/* 補助線を描画 */
+	/* 陬懷勧邱壹ｒ謠冗判 */
 	this._draw_aline(params, cpos, axis_angles);
-	/* 軸を描画 */
+	/* 霆ｸ繧呈緒逕ｻ */
 	this._draw_axis(params, cpos, axis_angles);
-	/* スケールラベルを描画 */
+	/* 繧ｹ繧ｱ繝ｼ繝ｫ繝ｩ繝吶Ν繧呈緒逕ｻ */
 	this._draw_scale_label(params, cpos);
-	/* 各項目のデフォルト色を定義 */
-	/* チャートを描写 */
+	/* 蜷��逶ｮ縺ｮ繝�ヵ繧ｩ繝ｫ繝郁牡繧貞ｮ夂ｾｩ */
+	/* 繝√Ε繝ｼ繝医ｒ謠丞� */
 	for(var i=0; i<items.length; i++) {
 		this._draw_radar_chart(params, cpos, axis_angles, items[i], params.faceColors[i]);
 	}
-	/* キャプションを描画 */
+	/* 繧ｭ繝｣繝励す繝ｧ繝ｳ繧呈緒逕ｻ */
 	this._draw_caption(params, cpos, axis_angles);
-	/* 凡例を描画 */
+	/* 蜃｡萓九ｒ謠冗判 */
     //this._draw_legend(items, params, cpos);
 };
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-* 以下、内部関数
-* ──────────────────────────────── */
+/* 笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏�
+* 莉･荳九�蜀�Κ髢｢謨ｰ
+* 笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳笏�楳 */
 
 /* ------------------------------------------------------------------
-補助線の位置を自動算出
+陬懷勧邱壹�菴咲ｽｮ繧定�蜍慕ｮ怜�
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._aline_positions_auto_calc = function(min, max) {
+	max = 5;
+	min = 0;
 	var range = max - min;
 	var power10 = Math.floor( Math.log(range) / Math.log(10) );
 	var unit = Math.pow( 10,  power10);
@@ -238,34 +241,34 @@ html5jp.graph.radar.prototype._aline_positions_auto_calc = function(min, max) {
 	return array;
 };
 /* ------------------------------------------------------------------
-凡例を描画
+蜃｡萓九ｒ謠冗判
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_legend = function(items, params, cpos) {
 	if(params.legend != true) { return; }
-	/* DIV要素を仮に挿入してみて高さを調べる(1行分の高さ) */
-	var s = this._getTextBoxSize('あTEST', params.legendFontSize, params.legendFontFamily);
-	/* 凡例の各種座標を算出 */
+	/* DIV隕∫ｴ�ｒ莉ｮ縺ｫ謖ｿ蜈･縺励※縺ｿ縺ｦ鬮倥＆繧定ｪｿ縺ｹ繧�1陦悟�縺ｮ鬮倥＆) */
+	var s = this._getTextBoxSize('縺５EST', params.legendFontSize, params.legendFontFamily);
+	/* 蜃｡萓九�蜷�ｨｮ蠎ｧ讓吶ｒ邂怜� */
 	var lpos = {
 		x: Math.round( cpos.x + cpos.r + this.canvas.width * 0.15 ),
 		y: Math.round( ( this.canvas.height - ( s.h * params.itemNum + s.h * 0.2 * (params.itemNum - 1) ) ) / 2 ),
 		h: s.h
 	};
-	lpos.cx = lpos.x + Math.round( lpos.h * 1.5 ); // 文字表示開始位置(x座標)
-	lpos.cw = this.canvas.width - lpos.cx;         // 文字表示幅
-	/* 描画 */
+	lpos.cx = lpos.x + Math.round( lpos.h * 1.5 ); // 譁�ｭ苓｡ｨ遉ｺ髢句ｧ倶ｽ咲ｽｮ(x蠎ｧ讓�
+	lpos.cw = this.canvas.width - lpos.cx;         // 譁�ｭ苓｡ｨ遉ｺ蟷�
+	/* 謠冗判 */
 	for(var i=0; i<params.itemNum; i++) {
-		/* 文字 */
+		/* 譁�ｭ�*/
 		this._drawText(lpos.cx, lpos.y, items[i][0], params.legendFontSize, params.legendFontFamily, params.legendColor);
-		/* 記号（背景） */
+		/* 險伜捷�郁レ譎ｯ��*/
 		this._make_path_legend_mark(lpos.x, lpos.y, s.h, s.h);
 		this.ctx.fillStyle = params.cBackgroundColor;
 		this.ctx.fill();
-		/* 記号（塗り） */
+		/* 險伜捷�亥｡励ｊ��*/
 		//this._make_path_legend_mark(lpos.x, lpos.y, s.h, s.h);
 		this.ctx.fillStyle = params.faceColors[i];
 		this.ctx.globalAlpha = params.faceAlpha;
 		this.ctx.fill();
-		/* 枠線 */
+		/* 譫�ｷ�*/
 		//this._make_path_legend_mark(lpos.x, lpos.y, s.h, s.h);
 		this.ctx.strokeStyle = params.faceColors[i];
 		this.ctx.globalAlpha = params.borderAlpha;
@@ -283,7 +286,7 @@ html5jp.graph.radar.prototype._make_path_legend_mark = function(x,y,w,h) {
 	this.ctx.closePath();
 };
 /* ------------------------------------------------------------------
-キャプションを描画
+繧ｭ繝｣繝励す繝ｧ繝ｳ繧呈緒逕ｻ
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_caption = function(params, cpos, axis_angles) {
 	if( typeof(params.aCap) != "object" || params.aCap.length < 1 ) { return; }
@@ -291,9 +294,9 @@ html5jp.graph.radar.prototype._draw_caption = function(params, cpos, axis_angles
 	if(n > params.angleNum) { n = params.angleNum; }
 	for(var i=0; i<n; i++) {
 		var text = params.aCap[i];
-		/* テキスト領域のサイズを算出 */
+		/* 繝�く繧ｹ繝磯�蝓溘�繧ｵ繧､繧ｺ繧堤ｮ怜� */
 		var s = this._getTextBoxSize(text, params.aCapFontSize, params.aCapFontFamily);
-		/* テキストを描画すべき左上端の座標を算出 */
+		/* 繝�く繧ｹ繝医ｒ謠冗判縺吶∋縺榊ｷｦ荳顔ｫｯ縺ｮ蠎ｧ讓吶ｒ邂怜� */
 		var ang = axis_angles[i];
 		var x = cpos.x + cpos.r * 1.15 * Math.cos(ang) - s.w / 2;
 		var y = cpos.y - cpos.r * 1.15 * Math.sin(ang) - s.h / 2;
@@ -303,12 +306,12 @@ html5jp.graph.radar.prototype._draw_caption = function(params, cpos, axis_angles
 		if( y + s.h > this.canvas.height * 0.98 ) { y = this.canvas.height * 0.98 - s.h; }
 		x = Math.round(x);
 		y = Math.round(y);
-		/* テキストを描画 */
+		/* 繝�く繧ｹ繝医ｒ謠冗判 */
 		this._drawText(x, y, text, params.aCapFontSize, params.aCapFontFamily, params.aCapColor);
 	}
 };
 /* ------------------------------------------------------------------
-スケールラベルを描画
+繧ｹ繧ｱ繝ｼ繝ｫ繝ｩ繝吶Ν繧呈緒逕ｻ
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_scale_label = function(params, cpos) {
 	if( params.sLabel != true) { return; }
@@ -317,31 +320,31 @@ html5jp.graph.radar.prototype._draw_scale_label = function(params, cpos) {
 		if( typeof(params.aLinePositions[i]) != "number" ) { continue; }
 		if( params.aLinePositions[i] < params.aMin ) { continue; }
 		var text = params.aLinePositions[i].toString();
-		/* テキスト領域のサイズを算出 */
+		/* 繝�く繧ｹ繝磯�蝓溘�繧ｵ繧､繧ｺ繧堤ｮ怜� */
 		var s = this._getTextBoxSize(text, params.sLabelFontSize, params.sLabelFontFamily);
-		/* テキストを描画すべき左上端の座標を算出 */
+		/* 繝�く繧ｹ繝医ｒ謠冗判縺吶∋縺榊ｷｦ荳顔ｫｯ縺ｮ蠎ｧ讓吶ｒ邂怜� */
 		var x = Math.round( cpos.x - s.w - 3 );
 		var y = Math.round( cpos.y - ( ( params.aLinePositions[i] - params.aMin ) * cpos.r / ( params.aMax - params.aMin ) ) - ( s.h / 2 ) );
-		/* テキストを描画 */
+		/* 繝�く繧ｹ繝医ｒ謠冗判 */
 		this._drawText(x, y, text, params.sLabelFontSize, params.sLabelFontFamily, params.sLabelColor);
 	}
 };
 /* ------------------------------------------------------------------
-チャートを描画
+繝√Ε繝ｼ繝医ｒ謠冗判
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_radar_chart = function(params, cpos, axis_angles, values, color) {
-	/* チャート面を塗りつぶす */
+	/* 繝√Ε繝ｼ繝磯擇繧貞｡励ｊ縺､縺ｶ縺�*/
 	this._make_path_for_radar_chart(params, cpos, axis_angles, values);
 	this.ctx.globalAlpha = params.faceAlpha;
 	this.ctx.fillStyle = color;
 	this.ctx.fill();
-	/* チャート境界線を引く */
+	/* 繝√Ε繝ｼ繝亥｢�阜邱壹ｒ蠑輔￥ */
 	//this._make_path_for_radar_chart(params, cpos, axis_angles, values);
 	this.ctx.globalAlpha = params.borderAlpha;
 	this.ctx.lineWidth = params.borderWidth;
 	this.ctx.strokeStyle = color;
 	this.ctx.stroke();
-	/* this.ctx.globalAlpha の値を初期値に戻す */
+	/* this.ctx.globalAlpha 縺ｮ蛟､繧貞�譛溷�縺ｫ謌ｻ縺�*/
 	this.ctx.globalAlpha = 1;
 };
 html5jp.graph.radar.prototype._make_path_for_radar_chart = function(params, cpos, axis_angles, values) {
@@ -363,7 +366,7 @@ html5jp.graph.radar.prototype._make_path_for_radar_chart = function(params, cpos
 	this.ctx.closePath();
 };
 /* ------------------------------------------------------------------
-軸を描画
+霆ｸ繧呈緒逕ｻ
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_axis = function(params, cpos, axis_angles) {
 	if( typeof(params.axisWidth) != "number" || params.axisWidth <= 0 ) {
@@ -379,7 +382,7 @@ html5jp.graph.radar.prototype._draw_axis = function(params, cpos, axis_angles) {
 	}
 };
 /* ------------------------------------------------------------------
-補助線を描画
+陬懷勧邱壹ｒ謠冗判
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_aline = function(params, cpos, axis_angles) {
 	if( typeof(params.aLineWidth) != "number" || params.aLineWidth <= 0 ) {
@@ -410,14 +413,14 @@ html5jp.graph.radar.prototype._draw_aline = function(params, cpos, axis_angles) 
 	}
 };
 /* ------------------------------------------------------------------
-チャートの形状を描画
+繝√Ε繝ｼ繝医�蠖｢迥ｶ繧呈緒逕ｻ
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._draw_chart_shape = function(params, cpos, axis_angles) {
-	/* チャート形状の塗り */
+	/* 繝√Ε繝ｼ繝亥ｽ｢迥ｶ縺ｮ蝪励ｊ */
 	this._make_path_chart_shape(params, cpos, axis_angles);
 	this.ctx.fillStyle = params.cBackgroundColor;
 	this.ctx.fill();
-	/* チャート形状のグラデーション */
+	/* 繝√Ε繝ｼ繝亥ｽ｢迥ｶ縺ｮ繧ｰ繝ｩ繝��繧ｷ繝ｧ繝ｳ */
 	if( params.cBackgroundGradation == true && ! document.uniqueID ) {
 		this._make_path_chart_shape(params, cpos, axis_angles);
 		var radgrad = this.ctx.createRadialGradient(cpos.x,cpos.y,0,cpos.x,cpos.y,cpos.r);
@@ -445,7 +448,7 @@ html5jp.graph.radar.prototype._make_path_chart_shape = function(params, cpos, ax
 	}
 };
 /* ------------------------------------------------------------------
-文字列を描画
+譁�ｭ怜�繧呈緒逕ｻ
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._drawText = function(x, y, text, font_size, font_family, color) {
 	var div = document.createElement('DIV');
@@ -461,7 +464,7 @@ html5jp.graph.radar.prototype._drawText = function(x, y, text, font_size, font_f
 	this.canvas.parentNode.appendChild(div);
 }
 /* ------------------------------------------------------------------
-文字列表示領域のサイズを取得
+譁�ｭ怜�陦ｨ遉ｺ鬆伜沺縺ｮ繧ｵ繧､繧ｺ繧貞叙蠕�
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._getTextBoxSize = function(text, font_size, font_family) {
 	var tmpdiv = document.createElement('DIV');
@@ -483,7 +486,7 @@ html5jp.graph.radar.prototype._getTextBoxSize = function(text, font_size, font_f
 	return o;
 }
 /* ------------------------------------------------------------------
-ブラウザー表示領域左上端を基点とする座標系におけるelmの左上端の座標
+繝悶Λ繧ｦ繧ｶ繝ｼ陦ｨ遉ｺ鬆伜沺蟾ｦ荳顔ｫｯ繧貞渕轤ｹ縺ｨ縺吶ｋ蠎ｧ讓咏ｳｻ縺ｫ縺翫￠繧菊lm縺ｮ蟾ｦ荳顔ｫｯ縺ｮ蠎ｧ讓�
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._getElementAbsPos = function(elm) {
 	var obj = new Object();
@@ -497,7 +500,7 @@ html5jp.graph.radar.prototype._getElementAbsPos = function(elm) {
 	return obj;
 };
 /* ------------------------------------------------------------------
-* CSS色文字列をRGBに変換
+* CSS濶ｲ譁�ｭ怜�繧坦GB縺ｫ螟画鋤
 * ---------------------------------------------------------------- */
 html5jp.graph.radar.prototype._csscolor2rgb = function (c) {
 	if( ! c ) { return null; }

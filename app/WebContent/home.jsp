@@ -215,13 +215,13 @@
 	  <tr>
 	    <td width="30%">
 	      	A : <%=spots.get(0).name%><br />
-	      IXX“x : <%=spots.get(0).total%>
+	      ใชในในใกๅบฆ : <%=spots.get(0).total%>
 	      <hr />
 	      	B : <%=spots.get(1).name%><br />
-	      IXX“x : <%=spots.get(1).total%>
+	      ใชในในใกๅบฆ : <%=spots.get(1).total%>
 	      <hr />
 	      	C : <%=spots.get(2).name%><br />
-	      IXX“x : <%=spots.get(2).total%>
+	      ใชในในใกๅบฆ : <%=spots.get(2).total%>
 	    </td>
 	    <td width="70%">
               <div id="select_map" style="width:400px; height:300px"></div>
@@ -256,10 +256,10 @@
 	      	}
 	      </script>
 	      <div>
-		IXX“x : <%=dst_spot.total%>
+			ใชในในใกๅบฆ : <%=dst_spot.total%>
 	      </div>
 	      <div>
-		R“g : <%=dst_spot.comment%>
+			ใณใกใณใ : <%=dst_spot.comment%>
 	      </div>
 	    </td>
 	    <td width="50%">

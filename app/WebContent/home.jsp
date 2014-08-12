@@ -93,10 +93,7 @@
       		position: Latlng0,
       		map: map,
       		titleContent:"<%=spots.get(0).name%>",
-      		labelContent: "A",
-      	   	labelAnchor: new google.maps.Point(3, 30),
-      	   	labelClass: "labels", // the CSS class for the label
-      	  	labelStyle: {opacity: 0.75}
+      		icon: "img/icon_A.png"
       	});
         google.maps.event.addListener(marker0, 'click', function() {
         	<%request.setAttribute("status","support");%>
@@ -106,10 +103,7 @@
       		position: Latlng1,
       		map: map,
       		title:"<%=spots.get(1).name%>",
-      		labelContent: 'B',
-      		labelAnchor: new google.maps.Point(3, 30),
-          	labelClass: "labels", // the CSS class for the label
-          	labelStyle: {opacity: 0.75}
+      		icon: "img/icon_B.png"
       	});
         google.maps.event.addListener(marker1, 'click', function() {
         	<%request.setAttribute("status","support");%>
@@ -119,10 +113,7 @@
       		position: Latlng2,
       		map: map,
       		title:"<%=spots.get(2).name%>",
-      		labelContent: 'C',
-      		labelAnchor: new google.maps.Point(3, 30),
-          	labelClass: "labels", // the CSS class for the label
-          	labelStyle: {opacity: 0.75}
+      		icon: "img/icon_C.png"
       	});
         google.maps.event.addListener(marker2, 'click', function() {
         	<%request.setAttribute("status","support");%>

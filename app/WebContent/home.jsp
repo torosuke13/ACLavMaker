@@ -30,6 +30,10 @@
   <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD2wBM0eTo5GqhQpmujouK-Jbv-zKlY-cI&sensor=true">
   </script>
+
+  
+<script type="text/javascript" src="./html5jp/graph/radar.js"></s
+  
   
   <script type="text/javascript">
   	var latitude = 0.0;
@@ -42,7 +46,7 @@
     	if (navigator.geolocation) {
     		navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
     	} else {
-    		message = "本ブラウザではGeolocationが使えません";
+    		message = "譛ｬ繝悶Λ繧ｦ繧ｶ縺ｧ縺ｯGeolocation縺御ｽｿ縺医∪縺帙ｓ";
     		document.getElementById("area_name").innerHTML = message;
     	}
   	}
@@ -62,7 +66,7 @@
   	}
   	
   	function errorCallback(error) {
-  		message = "位置情報が許可されていません";
+  		message = "菴咲ｽｮ諠�����ｱ縺瑚ｨｱ蜿ｯ縺輔ｌ縺ｦ縺����∪縺帙ｓ";
   		document.getElementById("area_name").innerHTML = message;
   	}
   	
@@ -204,25 +208,48 @@
       </div>
     </div>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
-      <table width="80%">
-	<tr>
-	  <td width="30%">
-	    <div>A : <%=spots.get(0).name%></div>
-	    <div>オススメ度 : <%=spots.get(0).total%></div>
-	    <hr />
-	    <div>B : <%=spots.get(1).name%><br /></div>
-	    <div>オススメ度 : <%=spots.get(0).total%></div>
-	    <hr />
-	    <div>C : <%=spots.get(2).name%><br /></div>
-	    <div>オススメ度 : <%=spots.get(0).total%></div>
-	  </td>
-	  <td width="50%">
-            <div id="select_map" style="width:50%; height:30%"></div>
-	  </td>
-      </table>
+      <center>
+	<table width="80%">
+	  <tr>
+	    <td width="30%">
+	      <div>A : <%=spots.get(0).name%></div>
+	      <div>繧ｪ繧ｹ繧ｹ繝｡蠎ｦ : <%=spots.get(0).total%></div>
+	      <hr />
+	      <div>B : <%=spots.get(1).name%><br /></div>
+	      <div>繧ｪ繧ｹ繧ｹ繝｡蠎ｦ : <%=spots.get(1).total%></div>
+	      <hr />
+	      <div>C : <%=spots.get(2).name%><br /></div>
+	      <div>繧ｪ繧ｹ繧ｹ繝｡蠎ｦ : <%=spots.get(2).total%></div>
+	    </td>
+	    <td width="70%">
+              <div id="select_map" style="width:50%; height:30%"></div>
+	    </td>
+	</table>
+      </center>
     <% } %>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
-        	  <div id="support_map" style="width:800px; height:600px"></div>
+      <center>
+	<table width="80%">
+	  <tr>
+	    <td width="30%">
+	      <script>
+	       var rc = new html5jp.graph.radar("sample");
+               if( !rc ) { return; }
+               var items = [["",
+			     dst_spot.ambience,
+			     dst_spot.accessibility,
+			     dst_spot.calmness,
+			     dst_spot.dramatic,
+			     dst_spot.openess]];
+               var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openess"]};
+	       rc.draw(items, params);
+	      </script>
+	    </td>
+	    <td width="70%">
+	      <div id="support_map" style="width:800px; height:600px"></div>
+	    </td>
+	</table>
+      </center>
     <% } %>
   </div>
 </body>

@@ -209,10 +209,10 @@
     </div>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
 
-	<table>
+	<table width="80%">
 	  <tr>
 	    <td width="30%">
-	      	A : <%=spots.get(0).name%>
+	      	A : <%=spots.get(0).name%><br />
 	      	オススメ度: <%=spots.get(0).total%>
 	      <hr />
 	      	B : <%=spots.get(1).name%><br />
@@ -223,6 +223,7 @@
 	    </td>
 	    <td width="70%">
               <div id="select_map" style="width:800px; height:600px"></div>
+              <div id="area_name"></div>
 	    </td>
 	</table>
     <% } %>
@@ -248,6 +249,7 @@
 	    </td>
 	    <td width="70%">
 	      <div id="support_map" style="width:800px; height:600px"></div>
+	      <div id="area_name"></div>
 	    </td>
 	</table>
     <% } %>

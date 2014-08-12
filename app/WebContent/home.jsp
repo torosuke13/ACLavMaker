@@ -25,7 +25,10 @@
      border: 2px solid black;
      white-space: nowrap;
    }
- </style>
+    .support_map {
+      width: 100%;
+    }
+   </style>
   <script src="/js/bootstrap.min.js"></script>
   <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD2wBM0eTo5GqhQpmujouK-Jbv-zKlY-cI&sensor=true">
@@ -234,12 +237,12 @@
 	<table width="80%">
 	  <tr>
 	    <td width="50%">
-	      <div id="location_name">
+	      <div id="location_name" width="100%">
 		<h3>
 		  <%= dst_spot.name %>
 		</h3>
 	      </div>
-	      <div>
+	      <div width="100%">
 	        <canvas width="100%" height="400px" id="sample"></canvas>
 	      </div>
 	      <script>
@@ -264,7 +267,7 @@
 	    </td>
 	    <td width="50%">
 	      <!--<div id="support_map" style="width:400px; height:300px"></div>-->
-	      <div id="support_map" width="100%"></div>
+	      <div id="support_map"></div>
 	      <div id="area_name"></div>
 	    </td>
 	</table>

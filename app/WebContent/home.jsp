@@ -242,7 +242,7 @@
 		  <%= dst_spot.name %>
 		</h3>
 	      </div>
-	      <div width="100%">
+	      <div width="100%" id="canvas">
 	        <canvas width="100%" height="400px" id="sample"></canvas>
 	      </div>
 	      <script>
@@ -267,7 +267,7 @@
 	    </td>
 	    <td width="50%">
 	      <!--<div id="support_map" style="width:400px; height:300px"></div>-->
-	      <div id="support_map"></div>
+	      <div id="support_map" style="width:300px; height:300px"></div>
 	      <div id="area_name"></div>
 	    </td>
 	</table>

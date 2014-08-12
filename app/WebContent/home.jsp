@@ -203,24 +203,27 @@
         </form>
       </div>
     </div>
-    <div>
-    <table>
-    <tr>
-    <td>
-    test
-    </td>
-    <td>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
-        	  <div id="select_map" style="width:800px; height:600px"></div>
-        	  <div id="area_name"></div>
+      <table width="80%">
+	<tr>
+	  <td width="30%">
+	    A : <%=spots.get(0).name%><br />
+	    <hr />
+	    B : <%=spots.get(1).name%><br />
+	    <hr />
+	    C : <%=spots.get(2).name%><br />
+	    <hr />
+	  </td>
+	  <td width="70%">
+            <div id="select_map" style="width:800px; height:600px"></div>
+            <div id="area_name"></div>
+	  </td>
+      </table>
     <% } %>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
         	  <div id="support_map" style="width:800px; height:600px"></div>
         	  <div id="area_name"></div>
     <% } %>
-    </td>
-    </table>
-    </div>
   </div>
 </body>
 </html>

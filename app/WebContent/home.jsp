@@ -72,7 +72,7 @@
         	center: myLatlng,
         	mapTypeId: google.maps.MapTypeId.ROADMAP
       	};
-      	var map = new google.maps.Map(document.getElementById("select_canvas"), opts);
+      	var map = new google.maps.Map(document.getElementById("select_map"), opts);
       	
       	var mymarker = new google.maps.Marker({
       		position: myLatlng,
@@ -96,7 +96,16 @@
       		icon: "img/icon_A.png"
       	});
         google.maps.event.addListener(marker0, 'click', function() {
-        	<%request.setAttribute("status","support");%>
+        	var form0 = document.createElement('form');
+            document.body.appendChild(form0);
+            var input0 = document.createElement('input');
+            input0.setAttribute('type', 'hidden');
+            input0.setAttribute('name' , 'marker');
+            input0.setAttribute('value' , '0');
+            form.appendChild(input);
+            form.setAttribute('action', '/support');
+            form.setAttribute('method', 'post');
+            form.submit();
         });
         var Latlng1 = new google.maps.LatLng(<%=spots.get(1).latitude%>,<%=spots.get(1).longitude%>);
         var marker1 = new google.maps.Marker({
@@ -106,7 +115,16 @@
       		icon: "img/icon_B.png"
       	});
         google.maps.event.addListener(marker1, 'click', function() {
-        	<%request.setAttribute("status","support");%>
+        	var form1 = document.createElement('form');
+            document.body.appendChild(form1);
+            var input1 = document.createElement('input');
+            input1.setAttribute('type', 'hidden');
+            input1.setAttribute('name' , 'marker');
+            input1.setAttribute('value' , '1');
+            form.appendChild(input);
+            form.setAttribute('action', '/support');
+            form.setAttribute('method', 'post');
+            form.submit();
         });
         var Latlng2 = new google.maps.LatLng(<%=spots.get(2).latitude%>,<%=spots.get(2).longitude%>);
         var marker2 = new google.maps.Marker({
@@ -116,7 +134,16 @@
       		icon: "img/icon_C.png"
       	});
         google.maps.event.addListener(marker2, 'click', function() {
-        	<%request.setAttribute("status","support");%>
+        	var form2 = document.createElement('form');
+            document.body.appendChild(form2);
+            var input2 = document.createElement('input');
+            input2.setAttribute('type', 'hidden');
+            input2.setAttribute('name' , 'marker');
+            input2.setAttribute('value' , '2');
+            form.appendChild(input);
+            form.setAttribute('action', '/support');
+            form.setAttribute('method', 'post');
+            form.submit();
         });
         <%}%>
     }
@@ -129,45 +156,26 @@
         	center: myLatlng,
         	mapTypeId: google.maps.MapTypeId.ROADMAP
       	};
-      	var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
+      	var map2 = new google.maps.Map(document.getElementById("support_map"), opts);
       	
       	var mymarker = new google.maps.Marker({
       		position: myLatlng,
-      		map: map,
+      		map: map2,
       		title:"your location"
       	});
       	
       	<%
-        java.util.List<Spot> spots2 = (java.util.List<Spot>) request.getAttribute("spots");
-        if (spots == null) {
-       	 spots = new ArrayList<Spot>();
-        }
-        System.out.println("spots size:" + spots.size());
-        for (int i = 0; i < spots.size(); i++) {
+      	if(request.getAttribute("dst_spot") != null) {
+      		Spot dst_spot = (Spot) request.getAttribute("dst_spot");
+        	System.out.println("dst_spot:" + dst_spot.name);
         %>
-        var Latlng<%=i%> = new google.maps.LatLng(<%=spots.get(i).latitude%>,<%=spots.get(i).longitude%>);
-        var marker<%=i%> = new google.maps.Marker({
-      		position: Latlng<%=i%>,
-      		map: map,
-      		title:"<%=spots.get(i).name%>"
+        var Latlng = new google.maps.LatLng(<%=dst_spot.latitude%>,<%=dst_spot.longitude%>);
+        var marker = new google.maps.Marker({
+      		position: Latlng,
+      		map: map2,
+      		title:"<%=dst_spot.name%>",
       	});
-        google.maps.event.addListener(marker<%=i%>, 'click', function() {
-            var request = {
-            		origin: myLatlng,
-            		destination: Latlng<%=i%>,
-            		travelMode: google.maps.TravelMode.WALKING
-            };
-            directionsService.route(request, function(result, status) {
-            	if (status == google.maps.DirectionsStatus.OK) {
-            		directionsDisplay.setDirections(result);
-            	}
-            });
-        	<%request.setAttribute("status","support");%>
-        });
-            
-        <%
-        }
-        %>
+        <%}%>
     }
     
     function get_javascript_variable(){
@@ -195,7 +203,13 @@
         </form>
       </div>
     </div>
-    
+    <div>
+    <table>
+    <tr>
+    <td>
+    test
+    </td>
+    <td>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
         	  <div id="select_map" style="width:800px; height:600px"></div>
         	  <div id="area_name"></div>
@@ -204,7 +218,9 @@
         	  <div id="support_map" style="width:800px; height:600px"></div>
         	  <div id="area_name"></div>
     <% } %>
-    
+    </td>
+    </table>
+    </div>
   </div>
 </body>
 </html>

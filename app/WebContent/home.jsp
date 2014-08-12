@@ -72,7 +72,7 @@
         	center: myLatlng,
         	mapTypeId: google.maps.MapTypeId.ROADMAP
       	};
-      	var map = new google.maps.Map(document.getElementById("map_canvas"), opts);
+      	var map = new google.maps.Map(document.getElementById("select_canvas"), opts);
       	
       	var mymarker = new google.maps.Marker({
       		position: myLatlng,
@@ -188,22 +188,20 @@
         <% } %>
         <form name ="input_form" action="/support" method="post" onsubmit="get_javascript_variable()">
             <p>
-                <input type="submit" value="Support" />
+                <input type="submit" value="Support???" />
                 <input type="hidden" name="latitude" value="" />
                 <input type="hidden" name="longitude" value="" />
-                <input type="hidden" name="test" value="testdesu" />
             </p>
         </form>
       </div>
     </div>
     
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
-        	  <div id="map_canvas" style="width:800px; height:600px"></div>
+        	  <div id="select_map" style="width:800px; height:600px"></div>
         	  <div id="area_name"></div>
     <% } %>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
-        	  <div id="map_canvas" style="width:800px; height:600px"></div>
-        	  <div id="directionsPanel" style="float:right;width:300px; height:300px"></div>
+        	  <div id="support_map" style="width:800px; height:600px"></div>
         	  <div id="area_name"></div>
     <% } %>
     

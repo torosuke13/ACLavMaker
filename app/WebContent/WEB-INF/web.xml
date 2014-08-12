@@ -4,33 +4,6 @@
     <welcome-file>home.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <display-name>HomeServlet</display-name>
-    <servlet-name>HomeServlet</servlet-name>
-    <servlet-class>com.ibm.bluemix.samples.HomeServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>HomeServlet</servlet-name>
-    <url-pattern>/home</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <display-name>DeleteServlet</display-name>
-    <servlet-name>DeleteServlet</servlet-name>
-    <servlet-class>com.ibm.bluemix.samples.DeleteServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DeleteServlet</servlet-name>
-    <url-pattern>/delete</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <display-name>UploadServlet</display-name>
-    <servlet-name>UploadServlet</servlet-name>
-    <servlet-class>com.ibm.bluemix.samples.UploadServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UploadServlet</servlet-name>
-    <url-pattern>/upload</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <display-name>SupportServlet</display-name>
     <servlet-name>SupportServlet</servlet-name>
     <servlet-class>com.ibm.bluemix.samples.SupportServlet</servlet-class>
@@ -39,4 +12,13 @@
     <servlet-name>SupportServlet</servlet-name>
     <url-pattern>/support</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Spot</servlet-name>
+    <servlet-class>com.ibm.bluemix.samples.Spot</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Spot</servlet-name>
+    <url-pattern>/spot</url-pattern>
+  </servlet-mapping>
+
 </web-app>

@@ -52,19 +52,77 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-public class HomeServlet extends HttpServlet {
+public class SupportServlet extends HttpServlet {
+	List<Spot> spots;
+	private DB2Client db = new DB2Client();
 	
-	private PostgreSQLClient db = new PostgreSQLClient();
-	
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	System.out.println("Home Servlet");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	System.out.println("Support Servlet");
         
         try {
-			List<String> posts = db.getResults();
-			request.setAttribute("posts", posts);
+        	if(request.getParameter("marker") != null) {
+        		request.setAttribute("status","support");
+        		int index = Integer.parseInt(request.getParameter("marker"));
+        		request.setAttribute("dst_spot", spots.get(index));
+        	}
+        	else {
+        		spots = db.getSpots();
+
+        		System.out.println("latitude:" + request.getParameter("latitude"));
+        		System.out.println("longitude:" + request.getParameter("longitude"));
+        		double latitude = Double.parseDouble(request.getParameter("latitude"));
+        		double longitude = Double.parseDouble(request.getParameter("latitude"));
+			
+        		/*現在の地点から各スポットへの距離を求める*/
+        		for(int i = 0; i < spots.size(); i++) {
+        			//ラジアンに変換
+        			double a_lat = latitude * Math.PI / 180;
+        			double a_lon = longitude * Math.PI / 180;
+        			double b_lat = spots.get(i).latitude * Math.PI / 180;
+        			double b_lon = spots.get(i).longitude * Math.PI / 180;
+
+        			// 緯度の平均、緯度間の差、経度間の差
+        			double latave = (a_lat + b_lat) / 2;
+        			double latidiff = a_lat - b_lat;
+        			double longdiff = a_lon - b_lon;
+
+        			//子午線曲率半径
+        			//半径を6335439m、離心率を0.006694で設定してます
+        			double meridian = 6335439 / Math.sqrt(Math.pow(1 - 0.006694 * Math.sin(latave) * Math.sin(latave), 3));    
+
+        			//卯酉線曲率半径
+        			//半径を6378137m、離心率を0.006694で設定してます
+        			double primevertical = 6378137 / Math.sqrt(1 - 0.006694 * Math.sin(latave) * Math.sin(latave));     
+
+        			//Hubenyの簡易式
+        			double x = meridian * latidiff;
+        			double y = primevertical * Math.cos(latave) * longdiff;
+
+        			spots.get(i).distance = (int) Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+        			System.out.println(i + ":dis:" + spots.get(i).distance);
+        		}
+			
+        		/*距離によってspotsをソーティング（単純選択法）*/
+        		for(int i = 0; i < spots.size() -1; i++) {
+        			int min_index = i;
+        			int min_dis = spots.get(i).distance;
+        			for(int j = i + 1; j < spots.size(); j++) {
+        				if(spots.get(j).distance < min_dis) {
+        					min_dis = spots.get(j).distance;
+        					min_index = j;
+        				}
+        			}
+        			Spot min_spot = spots.get(min_index);
+        			spots.set(min_index, spots.get(i));
+        			spots.set(i, min_spot);
+        		}
+			
+        		request.setAttribute("spots", spots);
+        		request.setAttribute("status", "select");
+        	}
 		} catch (Exception e) {
 			request.setAttribute("msg", e.getMessage());
-			request.setAttribute("posts", new ArrayList<String>());
+			request.setAttribute("spots", new ArrayList<Spot>());
 			e.printStackTrace(System.err);
 		}
         

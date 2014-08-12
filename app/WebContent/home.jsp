@@ -1,104 +1,276 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.ibm.bluemix.samples.Spot" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Upload</title>
+  <title>ACLav Maker</title>
   <link href="/css/bootstrap.css" rel="stylesheet">
   <style>
     .hero-unit {
       margin-top: 60px;
     }
   </style>
+   <style type="text/css">
+   .labels {
+     color: red;
+     background-color: white;
+     font-family: "Lucida Grande", "Arial", sans-serif;
+     font-size: 10px;
+     font-weight: bold;
+     text-align: center;
+     width: 40px;     
+     border: 2px solid black;
+     white-space: nowrap;
+   }
+    .support_map {
+      width: 100%;
+    }
+   </style>
   <script src="/js/bootstrap.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+  <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD2wBM0eTo5GqhQpmujouK-Jbv-zKlY-cI&sensor=true">
+  </script>
+
   
-  <script>
-//ユーザーの現在の位置情報を取得
-navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-
-/***** ユーザーの現在の位置情報を取得 *****/
-function successCallback(position) {
-  	var gl_text = "緯度：" + position.coords.latitude + "<br>";
-    gl_text += "経度：" + position.coords.longitude + "<br>";
-    //gl_text += "高度：" + position.coords.altitude + "<br>";
-    //gl_text += "緯度・経度の誤差：" + position.coords.accuracy + "<br>";
-    //gl_text += "高度の誤差：" + position.coords.altitudeAccuracy + "<br>";
-    gl_text += "方角：" + position.coords.heading + "<br>";
-    //gl_text += "速度：" + position.coords.speed + "<br>";
-  	document.getElementById("show_result").innerHTML = gl_text;
+<script type="text/javascript" src="./html5jp/graph/radar.js"></script>
+  
+  
+  <script type="text/javascript">
+  	var latitude = 0.0;
+  	var longitude = 0.0;
+  	var message;
   	
-   	var map = new google.maps.Map(document.getElementById("map"));
-    map.addControl(new GLargeMapControl());
-    map.addControl(new GMapTypeControl());
-    var latlng = new GLatLng(position.coords.latitude,position.coords.longitude);
-    map.setCenter(latlng, 14, G_NORMAL_MAP);
-    var marker = new GMarker(latlng);
-    map.addOverlay(marker);
-}
-
-/***** 位置情報が取得できない場合 *****/
-function errorCallback(error) {
-  var err_msg = "";
-  switch(error.code)
-  {
-    case 1:
-      err_msg = "位置情報の利用が許可されていません";
-      break;
-    case 2:
-      err_msg = "デバイスの位置が判定できません";
-      break;
-    case 3:
-      err_msg = "タイムアウトしました";
-      break;
-  }
-  document.getElementById("show_result").innerHTML = err_msg;
-}
-</script>
-
+  	function initialize() {
+  		<% System.out.println("jsp:initialize"); %>
+  		document.getElementById("area_name").innerHTML= '';
+    	if (navigator.geolocation) {
+    		navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
+    	} else {
+    		message = "can't use Geolocation";
+    		document.getElementById("area_name").innerHTML = message;
+    	}
+  	}
+  	
+  	function successCallback(pos) {
+  		latitude = pos.coords.latitude;
+  		longitude = pos.coords.longitude;
+  		<% System.out.println("jsp:successCallback"); %>
+  		<% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { 
+  			System.out.println("jsp:mapping");%>
+  			mapping();
+  		<%}%>
+  		<% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { 
+  		System.out.println("jsp:supporting");%>
+			supporting();
+		<%}%>
+  	}
+  	
+  	function errorCallback(error) {
+  		message = "error callback";
+  		document.getElementById("area_name").innerHTML = message;
+  	}
+  	
+    function mapping() {
+      	var myLatlng = new google.maps.LatLng(latitude,longitude);
+      	var opts = {
+        	zoom: 15,
+        	center: myLatlng,
+        	mapTypeId: google.maps.MapTypeId.ROADMAP
+      	};
+      	var map = new google.maps.Map(document.getElementById("select_map"), opts);
+      	
+      	var mymarker = new google.maps.Marker({
+      		position: myLatlng,
+      		map: map,
+      		title:"your location"
+      	});
+      	
+      	<%
+        java.util.List<Spot> spots = (java.util.List<Spot>) request.getAttribute("spots");
+        if (spots == null) {
+       	 spots = new ArrayList<Spot>();
+        }
+        System.out.println("spots size:" + spots.size());
+        %>
+        <% if(spots.size() >= 3) {%>
+        var Latlng0 = new google.maps.LatLng(<%=spots.get(0).latitude%>,<%=spots.get(0).longitude%>);
+        var marker0 = new google.maps.Marker({
+      		position: Latlng0,
+      		map: map,
+      		titleContent:"<%=spots.get(0).name%>",
+      		icon: "img/icon_A.png"
+      	});
+        google.maps.event.addListener(marker0, 'click', function() {
+        	var form0 = document.createElement('form');
+            document.body.appendChild(form0);
+            var input0 = document.createElement('input');
+            input0.setAttribute('type', 'hidden');
+            input0.setAttribute('name' , 'marker');
+            input0.setAttribute('value' , '0');
+            form0.appendChild(input0);
+            form0.setAttribute('action', '/support');
+            form0.setAttribute('method', 'post');
+            form0.submit();
+        });
+        var Latlng1 = new google.maps.LatLng(<%=spots.get(1).latitude%>,<%=spots.get(1).longitude%>);
+        var marker1 = new google.maps.Marker({
+      		position: Latlng1,
+      		map: map,
+      		title:"<%=spots.get(1).name%>",
+      		icon: "img/icon_B.png"
+      	});
+        google.maps.event.addListener(marker1, 'click', function() {
+        	var form1 = document.createElement('form');
+            document.body.appendChild(form1);
+            var input1 = document.createElement('input');
+            input1.setAttribute('type', 'hidden');
+            input1.setAttribute('name' , 'marker');
+            input1.setAttribute('value' , '1');
+            form1.appendChild(input1);
+            form1.setAttribute('action', '/support');
+            form1.setAttribute('method', 'post');
+            form1.submit();
+        });
+        var Latlng2 = new google.maps.LatLng(<%=spots.get(2).latitude%>,<%=spots.get(2).longitude%>);
+        var marker2 = new google.maps.Marker({
+      		position: Latlng2,
+      		map: map,
+      		title:"<%=spots.get(2).name%>",
+      		icon: "img/icon_C.png"
+      	});
+        google.maps.event.addListener(marker2, 'click', function() {
+        	var form2 = document.createElement('form');
+            document.body.appendChild(form2);
+            var input2 = document.createElement('input');
+            input2.setAttribute('type', 'hidden');
+            input2.setAttribute('name' , 'marker');
+            input2.setAttribute('value' , '2');
+            form2.appendChild(input2);
+            form2.setAttribute('action', '/support');
+            form2.setAttribute('method', 'post');
+            form2.submit();
+        });
+        <%}%>
+    }
+    
+    function supporting() {
+      	var myLatlng = new google.maps.LatLng(latitude,longitude);
+      	var opts = {
+        	zoom: 16,
+        	center: myLatlng,
+        	mapTypeId: google.maps.MapTypeId.ROADMAP
+      	};
+      	var map2 = new google.maps.Map(document.getElementById("support_map"), opts);
+      	
+      	var mymarker2 = new google.maps.Marker({
+      		position: myLatlng,
+      		map: map2,
+      		title:"your location",
+      		icon: "img/icon_A.png"
+      	});
+      	
+      	<%
+      	Spot dst_spot = new Spot();
+      	if(request.getAttribute("dst_spot") != null) {
+      		dst_spot = (Spot) request.getAttribute("dst_spot");
+        	System.out.println("dst_spot:" + dst_spot.name);
+        %>
+        var Latlng = new google.maps.LatLng(<%=dst_spot.latitude%>,<%=dst_spot.longitude%>);
+        var marker = new google.maps.Marker({
+      		position: Latlng,
+      		map: map2,
+      		title:"<%=dst_spot.name%>",
+      	});
+        <%}%>
+    }
+    
+    function get_javascript_variable(){
+        document.forms['input_form'].elements['latitude'].value = latitude;
+        document.forms['input_form'].elements['longitude'].value = longitude;
+    }
+    </script>
 </head>
 <meta charset="utf-8">
-<body>
+<body onload="initialize()">
   <div class="container">
     <div class="hero-unit">
-      <div class="pull-right">    
-        <a href="/delete" class="btn btn-danger" title="Clear All">X</a>
-      </div>
       <div class="text-center">
-        <h1><a href="/">BlueMix Upload</a></h1>
-        
-        <p>
-          <form action="/support" method="POST">
-            <input type="hidden" name="support" value="support" />
-            <input type="submit" class="btn" value="Support" />
-          </form>
-        </p>
+        <h1><a href="/">ACLav Maker</a></h1>
         
         <% if (request.getAttribute("msg") != null) { %>
         	  <div class="alert alert-info"><%= request.getAttribute("msg") %></div>
         <% } %>
+        <form name ="input_form" action="/support" method="post" onsubmit="get_javascript_variable()">
+            <p>
+                <input type="submit" value="Support" />
+                <input type="hidden" name="latitude" value="" />
+                <input type="hidden" name="longitude" value="" />
+            </p>
+        </form>
       </div>
     </div>
-    <div>
-      <table class="table">
-      <% 
-         java.util.List<String> posts = (java.util.List<String>) request.getAttribute("posts");
-         if (posts == null) {
-        	 posts = new ArrayList<String>();
-         }
-         for (String post : posts) {
-      %>
-        	<tr><td><%= post %></td></tr>
-      <% } %>
-      </table>
-    </div>
-    
-    <% if (request.getAttribute("status") != null) { %>
-        	  <div id="show_result"></div>
-        	  <div id="map"></div>
+    <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
+
+	<table width="80%">
+	  <tr>
+	    <td width="30%">
+	      	A : <%=spots.get(0).name%><br />
+	      オススメ度 : <%=spots.get(0).total%>
+	      <hr />
+	      	B : <%=spots.get(1).name%><br />
+	      オススメ度 : <%=spots.get(1).total%>
+	      <hr />
+	      	C : <%=spots.get(2).name%><br />
+	      オススメ度 : <%=spots.get(2).total%>
+	    </td>
+	    <td width="70%">
+              <div id="select_map" style="width:400px; height:300px"></div>
+              <div id="area_name"></div>
+	    </td>
+	</table>
     <% } %>
+    <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
     
+	<table width="80%">
+	  <tr>
+	    <td width="50%">
+	      <div id="location_name" width="100px">
+		<h3>
+		  <%= dst_spot.name %>
+		</h3>
+	      </div>
+	      <div width="300px" id="canvas">
+	        <canvas width="300px" height="300px" id="sample"></canvas>
+	      </div>
+	      <script>
+	       var rc = new html5jp.graph.radar("sample");
+               if( rc ) {
+               var items = [["",
+			     <%=dst_spot.ambience%>,
+			     <%=dst_spot.accessibility%>,
+			     <%=dst_spot.calmness%>,
+			     <%=dst_spot.dramatic%>,
+			     <%=dst_spot.openess%>]];
+               var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openness"]};
+	       		rc.draw(items, params);
+	      	}
+	      </script>
+	      <div>
+			オススメ度 : <%=dst_spot.total%>
+	      </div>
+	      <div>
+			コメント : <%=dst_spot.comment%>
+	      </div>
+	    </td>
+	    <td width="50%">
+	      <div id="support_map" style="width:300px; height:300px"></div>
+	      <div id="area_name"></div>
+	    </td>
+	</table>
+    <% } %>
   </div>
 </body>
 </html>

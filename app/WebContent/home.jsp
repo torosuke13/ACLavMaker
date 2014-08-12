@@ -38,7 +38,7 @@
   	
   	function initialize() {
   		<% System.out.println("jsp:initialize"); %>
-  		document.getElementById("area_name").innerHTML= '位置情報取得します';
+  		document.getElementById("area_name").innerHTML= '';
     	if (navigator.geolocation) {
     		navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
     	} else {
@@ -103,7 +103,7 @@
             input0.setAttribute('type', 'hidden');
             input0.setAttribute('name' , 'marker');
             input0.setAttribute('value' , '0');
-            form0.appendChild(input);
+            form0.appendChild(input0);
             form0.setAttribute('action', '/support');
             form0.setAttribute('method', 'post');
             form0.submit();
@@ -122,7 +122,7 @@
             input1.setAttribute('type', 'hidden');
             input1.setAttribute('name' , 'marker');
             input1.setAttribute('value' , '1');
-            form1.appendChild(input);
+            form1.appendChild(input1);
             form1.setAttribute('action', '/support');
             form1.setAttribute('method', 'post');
             form1.submit();
@@ -141,7 +141,7 @@
             input2.setAttribute('type', 'hidden');
             input2.setAttribute('name' , 'marker');
             input2.setAttribute('value' , '2');
-            form2.appendChild(input);
+            form2.appendChild(input2);
             form2.setAttribute('action', '/support');
             form2.setAttribute('method', 'post');
             form2.submit();
@@ -152,7 +152,7 @@
     function supporting() {
       	var myLatlng = new google.maps.LatLng(latitude,longitude);
       	var opts = {
-        	zoom: 15,
+        	zoom: 16,
         	center: myLatlng,
         	mapTypeId: google.maps.MapTypeId.ROADMAP
       	};

@@ -53,7 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 public class SupportServlet extends HttpServlet {
-	
+	List<Spot> spots;
 	private DB2Client db = new DB2Client();
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,9 +62,11 @@ public class SupportServlet extends HttpServlet {
         try {
         	if(request.getParameter("marker") != null) {
         		request.setAttribute("status","support");
+        		int index = Integer.parseInt(request.getParameter("marker"));
+        		request.setAttribute("dst_spot", spots.get(index));
         	}
         	else {
-        		List<Spot> spots = db.getSpots();
+        		spots = db.getSpots();
 
         		System.out.println("latitude:" + request.getParameter("latitude"));
         		System.out.println("longitude:" + request.getParameter("longitude"));

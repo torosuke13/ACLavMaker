@@ -188,7 +188,7 @@
         <% } %>
         <form name ="input_form" action="/support" method="post" onsubmit="get_javascript_variable()">
             <p>
-                <input type="submit" value="Support???" />
+                <input type="submit" value="Support" />
                 <input type="hidden" name="latitude" value="" />
                 <input type="hidden" name="longitude" value="" />
             </p>

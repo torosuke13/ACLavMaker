@@ -39,7 +39,7 @@ public class DB2Client {
 				int dramatic = results.getInt("dramatic");
 				int openess = results.getInt("openess");
 				int total = results.getInt("total");
-				String comment = results.getString("name");
+				String comment = results.getString("comment");
 				
 				spots.add(new Spot(name, latitude, longitude, ambience, accessibility, calmness, dramatic,	openess, total,	comment));
 			}

@@ -243,7 +243,7 @@
 		</h3>
 	      </div>
 	      <div width="100%" id="canvas">
-	        <canvas width="100%" height="400px" id="sample"></canvas>
+	        <canvas width="100%"  id="sample"></canvas>
 	      </div>
 	      <script>
 	       var rc = new html5jp.graph.radar("sample");

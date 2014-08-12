@@ -165,12 +165,14 @@
       	var mymarker2 = new google.maps.Marker({
       		position: myLatlng,
       		map: map2,
-      		title:"your location"
+      		title:"your location",
+      		icon: "img/icon_A.png"
       	});
       	
       	<%
+      	Spot dst_spot = new Spot();
       	if(request.getAttribute("dst_spot") != null) {
-      		Spot dst_spot = (Spot) request.getAttribute("dst_spot");
+      		dst_spot = (Spot) request.getAttribute("dst_spot");
         	System.out.println("dst_spot:" + dst_spot.name);
         %>
         var Latlng = new google.maps.LatLng(<%=dst_spot.latitude%>,<%=dst_spot.longitude%>);
@@ -222,7 +224,7 @@
 	      	オススメ度: <%=spots.get(2).total%>
 	    </td>
 	    <td width="70%">
-              <div id="select_map" style="width:800px; height:600px"></div>
+              <div id="select_map" style="width:400px; height:300px"></div>
               <div id="area_name"></div>
 	    </td>
 	</table>
@@ -232,15 +234,18 @@
 	<table width="80%">
 	  <tr>
 	    <td width="30%">
+	      <div>
+	        <canvas width="100%" height="400px" id="sample"></canvas>
+	      </div>
 	      <script>
 	       var rc = new html5jp.graph.radar("sample");
                if( rc ) {
                var items = [["",
-			     dst_spot.ambience,
-			     dst_spot.accessibility,
-			     dst_spot.calmness,
-			     dst_spot.dramatic,
-			     dst_spot.openess]];
+			     <%=dst_spot.ambience%>,
+			     <%=dst_spot.accessibility%>,
+			     <%=dst_spot.calmness%>,
+			     <%=dst_spot.dramatic%>,
+			     <%=dst_spot.openess%>]];
                var params = {aCap: ["ambience", "accessibility", "calmness", "dramatic", "openess"]};
 	       		rc.draw(items, params);
 	      	}
@@ -248,7 +253,7 @@
 	      
 	    </td>
 	    <td width="70%">
-	      <div id="support_map" style="width:800px; height:600px"></div>
+	      <div id="support_map" style="width:400px; height:300px"></div>
 	      <div id="area_name"></div>
 	    </td>
 	</table>

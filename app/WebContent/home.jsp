@@ -51,10 +51,12 @@
   		latitude = pos.coords.latitude;
   		longitude = pos.coords.longitude;
   		<% System.out.println("jsp:successCallback"); %>
-  		<% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { %>
+  		<% if (request.getAttribute("status") != null && request.getAttribute("status").equals("select")) { 
+  			System.out.println("jsp:mapping");%>
   			mapping();
   		<%}%>
-  		<% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
+  		<% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { 
+  		System.out.println("jsp:supporting");%>
 			supporting();
 		<%}%>
   	}
@@ -65,7 +67,6 @@
   	}
   	
     function mapping() {
-    	<% System.out.println("jsp:mapping"); %>
       	var myLatlng = new google.maps.LatLng(latitude,longitude);
       	var opts = {
         	zoom: 15,
@@ -102,10 +103,10 @@
             input0.setAttribute('type', 'hidden');
             input0.setAttribute('name' , 'marker');
             input0.setAttribute('value' , '0');
-            form.appendChild(input);
-            form.setAttribute('action', '/support');
-            form.setAttribute('method', 'post');
-            form.submit();
+            form0.appendChild(input);
+            form0.setAttribute('action', '/support');
+            form0.setAttribute('method', 'post');
+            form0.submit();
         });
         var Latlng1 = new google.maps.LatLng(<%=spots.get(1).latitude%>,<%=spots.get(1).longitude%>);
         var marker1 = new google.maps.Marker({
@@ -121,10 +122,10 @@
             input1.setAttribute('type', 'hidden');
             input1.setAttribute('name' , 'marker');
             input1.setAttribute('value' , '1');
-            form.appendChild(input);
-            form.setAttribute('action', '/support');
-            form.setAttribute('method', 'post');
-            form.submit();
+            form1.appendChild(input);
+            form1.setAttribute('action', '/support');
+            form1.setAttribute('method', 'post');
+            form1.submit();
         });
         var Latlng2 = new google.maps.LatLng(<%=spots.get(2).latitude%>,<%=spots.get(2).longitude%>);
         var marker2 = new google.maps.Marker({
@@ -140,16 +141,15 @@
             input2.setAttribute('type', 'hidden');
             input2.setAttribute('name' , 'marker');
             input2.setAttribute('value' , '2');
-            form.appendChild(input);
-            form.setAttribute('action', '/support');
-            form.setAttribute('method', 'post');
-            form.submit();
+            form2.appendChild(input);
+            form2.setAttribute('action', '/support');
+            form2.setAttribute('method', 'post');
+            form2.submit();
         });
         <%}%>
     }
     
     function supporting() {
-    	<% System.out.println("jsp:supporting"); %>
       	var myLatlng = new google.maps.LatLng(latitude,longitude);
       	var opts = {
         	zoom: 15,
@@ -158,7 +158,7 @@
       	};
       	var map2 = new google.maps.Map(document.getElementById("support_map"), opts);
       	
-      	var mymarker = new google.maps.Marker({
+      	var mymarker2 = new google.maps.Marker({
       		position: myLatlng,
       		map: map2,
       		title:"your location"

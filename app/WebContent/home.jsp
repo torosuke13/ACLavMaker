@@ -207,22 +207,22 @@
       <table width="80%">
 	<tr>
 	  <td width="30%">
-	    A : <%=spots.get(0).name%><br />
+	    <div>A : <%=spots.get(0).name%></div>
+	    <div>オススメ度 : <%=spots.get(0).total%></div>
 	    <hr />
-	    B : <%=spots.get(1).name%><br />
+	    <div>B : <%=spots.get(1).name%><br /></div>
+	    <div>オススメ度 : <%=spots.get(0).total%></div>
 	    <hr />
-	    C : <%=spots.get(2).name%><br />
-	    <hr />
+	    <div>C : <%=spots.get(2).name%><br /></div>
+	    <div>オススメ度 : <%=spots.get(0).total%></div>
 	  </td>
-	  <td width="70%">
-            <div id="select_map" style="width:800px; height:600px"></div>
-            <div id="area_name"></div>
+	  <td width="50%">
+            <div id="select_map" style="width:50%; height:30%"></div>
 	  </td>
       </table>
     <% } %>
     <% if (request.getAttribute("status") != null && request.getAttribute("status").equals("support")) { %>
         	  <div id="support_map" style="width:800px; height:600px"></div>
-        	  <div id="area_name"></div>
     <% } %>
   </div>
 </body>
